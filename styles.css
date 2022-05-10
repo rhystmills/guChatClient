@@ -1,0 +1,172 @@
+* {
+    font-family: 'Helvetica';
+    box-sizing: border-box;
+}
+
+
+/* Elements */
+
+h1 {
+    padding-top: 0px;
+}
+
+body {
+    background: linear-gradient(0, navy 0%, blueviolet 100%);
+    margin: 0;
+    padding: 8px;
+    height: 100vh;
+}
+
+button {
+    border: none;
+    background: linear-gradient(0, navy -100%, blueviolet 200%);
+    color: white;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-left: 4px;
+}
+button:hover {
+    filter: brightness(1.5);
+    cursor: pointer;
+}
+textarea {
+    resize: none;
+}
+
+/* Classes */
+.block {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Ids */
+#nameScreen {
+    height: 100%;
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#nameScreen input {
+    padding: 0px 8px;
+    width: 100%;
+    height: 30px;
+    border: 2px #ddd solid;
+    border-radius: 4px;
+}
+
+#nameDialog {
+    background-color: white;
+    box-shadow: 4px 4px 40px rgba(0,0,0, 0.4);
+    padding: 40px;
+    border-radius: 8px;
+    margin-bottom: 50px;
+}
+
+#chatScreen {
+    height: 100%;
+    width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#messagePanel {
+    height:100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#messageScroll {
+    height: 100%;
+    padding-right: 4px;
+    flex-grow: 1;
+    overflow-y: scroll;
+    -webkit-mask-image: -webkit-gradient(linear, left 90%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.5)))
+}
+
+#messageScroll::-webkit-scrollbar {
+    left: -5px;
+    border-radius: 4px;
+    margin-right: -4px;
+    width: 8px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#messageScroll::-webkit-scrollbar-track {
+    border-radius: 4px;
+    background: none;
+}
+
+#messageScroll::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(255,255,255,0.6);
+}
+
+#messages {
+    background: linear-gradient(180deg, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0) 100%);
+    padding: 8px;
+    border-radius: 16px;
+}
+
+#messages div {
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    margin: 0 8px 8px 0;
+    background-color: white;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+#messages div.ownMessage {
+    background-color: rgb(207, 233, 255);
+    margin: 0 0 8px 8px;
+}
+
+#messages div label {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+#messages div p {
+    margin: 4px 0;
+    white-space: pre-wrap;
+}
+
+#inputPanel {
+    position: relative;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+#inputPanel::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    height: 1px;
+    top: 0px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 2%, rgba(255, 255, 255, 0.4) 98%, rgba(255, 255, 255, 0) 100%)
+}
+
+#inputPanel textarea {
+    padding: 8px;
+    width: 100%;
+    height: 60px;
+    border: 2px #ddd solid;
+    border-radius: 4px;
+}
