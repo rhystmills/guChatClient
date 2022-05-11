@@ -194,3 +194,15 @@ canvas:hover {
 #sendButton {
     align-self: auto;
 }
+
+#color {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+}
+
+#brushSize {
+    position: absolute;
+    top: 20px;
+    left: 80px;
+}

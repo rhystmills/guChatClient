@@ -3,8 +3,8 @@ const getRandomInt = (max) => {
 }
 
 const id = Math.random(1000000);
-const url = `ws://localhost:5001/websockets?userId=${id}`;
-const webSocket = new WebSocket("ws://localhost:5001/websockets");
+const url = `ws://ec2-34-245-201-205.eu-west-1.compute.amazonaws.com:5001/websockets?userId=${id}`;
+const webSocket = new WebSocket("ws://ec2-34-245-201-205.eu-west-1.compute.amazonaws.com:5001/websockets");
 
 const user = {};
 const state = {
@@ -108,7 +108,7 @@ webSocket.onmessage = (event) => {
             break;
         case "draw":
             if (state.nameEntered === true){
-                newDraw(data.coords.start, data.coords.end);
+                newDraw(data.coords.start, data.coords.end, data.coords.color, data.coords.brushSize);
             }
             state.coordsHistory.push(data.coords);
             break;
@@ -133,13 +133,16 @@ window.onload = () => {
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const colorInput = document.getElementById('color');
+const brushSizeInput = document.getElementById('brushSize');
+
 let coord = { x: 0, y: 0 };
 
-document.addEventListener('mousedown', start);
+canvas.addEventListener('mousedown', start);
 document.addEventListener('mouseup', stop);
 
 const drawHistory = () => {
-    state.coordsHistory.forEach(coords => newDraw(coords.start, coords.end))
+    state.coordsHistory.forEach(coords => newDraw(coords.start, coords.end, coords.color, coords.brushSize))
 }
 
 const resize = () => {
@@ -160,6 +163,8 @@ const submitDraw = (startCoord, endCoord) => {
         coords: {
             start: startCoord,
             end: endCoord,
+            color: colorInput.value,
+            brushSize: Math.round(brushSizeInput.value / 2)
         }
     })
 
@@ -190,7 +195,7 @@ const handleCanvasEvent = (event) => {
     coord = endCoord;
 }
 
-const newDraw = (startCoord, endCoord) => {
+const newDraw = (startCoord, endCoord, color, brushSize) => {
     const relativeStartCoord = {
         x: startCoord.x + canvas.offsetWidth / 2,
         y: startCoord.y + canvas.offsetHeight / 2,
@@ -200,9 +205,9 @@ const newDraw = (startCoord, endCoord) => {
         y: endCoord.y + canvas.offsetHeight / 2,
     };
     ctx.beginPath();
-    ctx.lineWidth = 5;
+    ctx.lineWidth = brushSize;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#222222';
+    ctx.strokeStyle = color;
     ctx.moveTo(relativeStartCoord.x, relativeStartCoord.y);
     ctx.lineTo(relativeEndCoord.x, relativeEndCoord.y);
     ctx.stroke();
