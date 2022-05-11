@@ -34,7 +34,8 @@ textarea {
 }
 canvas {
     background: white;
-    height: 800px;
+    border: 2px #ddd solid;
+    border-radius: 4px;
 }
 canvas:hover {
     cursor: crosshair;

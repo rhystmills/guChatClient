@@ -10,6 +10,7 @@ const user = {};
 const state = {
     nameEntered: false,
     messages: [],
+    coordsHistory: []
 }
 const nameScreen = document.getElementById("nameScreen");
 const appScreen = document.getElementById("appScreen");
@@ -27,6 +28,7 @@ const setName = () => {
         nameScreen.setAttribute("class","hidden")
         appScreen.setAttribute("class","")
         renderMessages();
+        drawHistory();
     }
 }
 
@@ -105,12 +107,16 @@ webSocket.onmessage = (event) => {
             renderMessages();
             break;
         case "draw":
-            newDraw(data.coords.start, data.coords.end)
+            if (state.nameEntered === true){
+                newDraw(data.coords.start, data.coords.end);
+            }
+            state.coordsHistory.push(data.coords);
             break;
     }
 }
 
 window.onload = () => {
+    window.addEventListener('resize', handleWindowResize);
     nameField.focus();
 }
 
@@ -131,15 +137,22 @@ let coord = { x: 0, y: 0 };
 
 document.addEventListener('mousedown', start);
 document.addEventListener('mouseup', stop);
-// window.addEventListener('resize', resize);
 
-// function resize() {
-//     ctx.canvas.width = window.innerWidth - 200;
-//     ctx.canvas.height = window.innerHeight - 50;
-// }
+const drawHistory = () => {
+    state.coordsHistory.forEach(coords => newDraw(coords.start, coords.end))
+}
 
-// resize();
-// window.onresize = resize;
+const resize = () => {
+    ctx.canvas.width = window.innerWidth - 336;
+    ctx.canvas.height = window.innerHeight - 20;
+}
+
+const handleWindowResize = () => {
+    resize();
+    drawHistory();
+}
+
+resize();
 
 const submitDraw = (startCoord, endCoord) => {
     const json = JSON.stringify({
@@ -155,8 +168,8 @@ const submitDraw = (startCoord, endCoord) => {
 
 const getEndCoord = (event) => {
     return {
-        x: event.clientX - canvas.offsetLeft,
-        y: event.clientY - canvas.offsetTop 
+        x: (event.clientX - canvas.offsetLeft) - canvas.offsetWidth/2,
+        y: (event.clientY - canvas.offsetTop) - canvas.offsetHeight/2
     }
 }
 
@@ -178,11 +191,19 @@ const handleCanvasEvent = (event) => {
 }
 
 const newDraw = (startCoord, endCoord) => {
+    const relativeStartCoord = {
+        x: startCoord.x + canvas.offsetWidth / 2,
+        y: startCoord.y + canvas.offsetHeight / 2,
+    };
+    const relativeEndCoord = {
+        x: endCoord.x + canvas.offsetWidth / 2,
+        y: endCoord.y + canvas.offsetHeight / 2,
+    };
     ctx.beginPath();
     ctx.lineWidth = 5;
     ctx.lineCap = 'round';
     ctx.strokeStyle = '#222222';
-    ctx.moveTo(startCoord.x, startCoord.y);
-    ctx.lineTo(endCoord.x, endCoord.y);
+    ctx.moveTo(relativeStartCoord.x, relativeStartCoord.y);
+    ctx.lineTo(relativeEndCoord.x, relativeEndCoord.y);
     ctx.stroke();
 }
