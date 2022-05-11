@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title>GuChat</title>
 </head>
-
 <body id="body">
     <div id="nameScreen">
         <div id="nameDialog">
@@ -17,15 +16,17 @@
             </div>
         </div>
     </div>
-    <div id="chatScreen" class="hidden">
-        
-        <div id="messagePanel">
-            <div id="messageScroll">
-                <div id="messages"></div>
-            </div>
-            <div id="inputPanel">
-                <textarea placeholder="Enter text..." id="text" name="text" rows="5" cols="33" class="block"></textarea>
-                <button id="sendButton">→</button>
+    <div id="appScreen" class="hidden">
+        <canvas height="800" width="1200" id="canvas"></canvas>
+        <div id="chatScreen">
+            <div id="messagePanel">
+                <div id="messageScroll">
+                    <div id="messages"></div>
+                </div>
+                <div id="inputPanel">
+                    <textarea placeholder="Enter text..." id="text" name="text" rows="5" cols="33" class="block"></textarea>
+                    <button id="sendButton">→</button>
+                </div>
             </div>
         </div>
     </div>

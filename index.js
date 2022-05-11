@@ -12,7 +12,7 @@ const state = {
     messages: [],
 }
 const nameScreen = document.getElementById("nameScreen");
-const chatScreen = document.getElementById("chatScreen");
+const appScreen = document.getElementById("appScreen");
 const nameButton = document.getElementById("nameButton");
 const sendButton = document.getElementById("sendButton");
 const textField = document.getElementById("text");
@@ -25,7 +25,7 @@ const setName = () => {
         user.name = nameField.value;
         state.nameEntered = true;
         nameScreen.setAttribute("class","hidden")
-        chatScreen.setAttribute("class","")
+        appScreen.setAttribute("class","")
         renderMessages();
     }
 }
@@ -54,6 +54,7 @@ const renderMessages = () => {
 
 const submitMessage = () => {
     const text = textField.value;
+    if (!text) return;
 
     const json = JSON.stringify({
         type: "message",
@@ -97,9 +98,16 @@ textField.addEventListener("keydown", (e) => {
 })
 
 webSocket.onmessage = (event) => {
-    const newMessages = JSON.parse(event.data);
-    state.messages = newMessages;
-    renderMessages();
+    const data = JSON.parse(event.data);
+    switch (data.type) {
+        case "messages":
+            state.messages = data.messages;
+            renderMessages();
+            break;
+        case "draw":
+            newDraw(data.coords.start, data.coords.end)
+            break;
+    }
 }
 
 window.onload = () => {
@@ -114,3 +122,67 @@ window.onload = () => {
 //     })
 //     webSocket.send(JSON.stringify(json))
 // }
+
+// CANVAS
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let coord = { x: 0, y: 0 };
+
+document.addEventListener('mousedown', start);
+document.addEventListener('mouseup', stop);
+// window.addEventListener('resize', resize);
+
+// function resize() {
+//     ctx.canvas.width = window.innerWidth - 200;
+//     ctx.canvas.height = window.innerHeight - 50;
+// }
+
+// resize();
+// window.onresize = resize;
+
+const submitDraw = (startCoord, endCoord) => {
+    const json = JSON.stringify({
+        type: "draw",
+        coords: {
+            start: startCoord,
+            end: endCoord,
+        }
+    })
+
+    webSocket.send(JSON.stringify(json))
+}
+
+const getEndCoord = (event) => {
+    return {
+        x: event.clientX - canvas.offsetLeft,
+        y: event.clientY - canvas.offsetTop 
+    }
+}
+
+function start(event) {
+    document.addEventListener('mousemove', handleCanvasEvent);
+    coord = getEndCoord(event);
+}
+
+function stop() {
+    document.removeEventListener('mousemove', handleCanvasEvent);
+}
+
+const handleCanvasEvent = (event) => {
+    const startCoord = coord;
+    const endCoord = getEndCoord(event);
+    submitDraw(startCoord, endCoord);
+    // newDraw(startCoord, endCoord);
+    coord = endCoord;
+}
+
+const newDraw = (startCoord, endCoord) => {
+    ctx.beginPath();
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#222222';
+    ctx.moveTo(startCoord.x, startCoord.y);
+    ctx.lineTo(endCoord.x, endCoord.y);
+    ctx.stroke();
+}

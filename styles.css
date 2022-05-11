@@ -32,7 +32,13 @@ button:hover {
 textarea {
     resize: none;
 }
-
+canvas {
+    background: white;
+    height: 800px;
+}
+canvas:hover {
+    cursor: crosshair;
+}
 /* Classes */
 .block {
     display: block;
@@ -72,7 +78,12 @@ textarea {
     border-radius: 8px;
     margin-bottom: 50px;
 }
-
+#appScreen {
+    height: 100%;
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+}
 #chatScreen {
     height: 100%;
     width: 300px;
@@ -80,16 +91,24 @@ textarea {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-self: center;
+}
+#appScreen * {
+    justify-content: center;
+    align-self: center;
+    margin: 0 auto;
 }
 
 #messagePanel {
     height:100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
 
 #messageScroll {
     height: 100%;
+    width: 100%;
     padding-right: 4px;
     flex-grow: 1;
     overflow-y: scroll;
@@ -102,7 +121,7 @@ textarea {
     margin-right: -4px;
     width: 8px;
     height: 8px;
-    background-color: rgba(255, 255, 255, 0.2);
+    /* background-color: rgba(255, 255, 255, 0.2); */
 }
 
 #messageScroll::-webkit-scrollbar-track {
@@ -169,4 +188,8 @@ textarea {
     height: 60px;
     border: 2px #ddd solid;
     border-radius: 4px;
+}
+
+#sendButton {
+    align-self: auto;
 }
